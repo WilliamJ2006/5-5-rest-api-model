@@ -2,13 +2,7 @@ const express = require('express');
 const path = require('path');
 
 // Instead of defining all of the controllers in this file, we've moved them to their own folder
-const {
-  listFellows,
-  findFellow,
-  createFellow,
-  updateFellow,
-  deleteFellow
-} = require('./controllers/fellowControllers');
+const fellowControllers = require('./controllers/fellowControllers');
 
 const app = express();
 let pathToFrontend = path.join(__dirname, '../frontend');
@@ -34,11 +28,11 @@ app.use(express.json());
 // Endpoints
 ////////////////////////
 
-app.get('/api/fellows', listFellows);
-app.get('/api/fellows/:id', findFellow);
-app.post('/api/fellows', createFellow);
-app.patch('/api/fellows/:id', updateFellow);
-app.delete('/api/fellows/:id', deleteFellow);
+app.get('/api/fellows', fellowControllers.listFellows);
+app.get('/api/fellows/:id', fellowControllers.findFellow);
+app.post('/api/fellows', fellowControllers.createFellow);
+app.patch('/api/fellows/:id', fellowControllers.updateFellow);
+app.delete('/api/fellows/:id', fellowControllers.deleteFellow);
 
 app.get('*', (req, res, next) => {
   if (req.originalUrl.startsWith('/api')) return next();

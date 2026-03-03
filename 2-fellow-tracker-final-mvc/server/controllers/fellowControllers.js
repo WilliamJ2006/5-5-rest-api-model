@@ -1,21 +1,21 @@
-const Fellow = require('../model/Fellow');
+const fellowModel = require('../models/fellowModel.js');
 
-/* 
+/*
 These controllers take incoming requests and utilize the
-methods provided by the Fellow "model" before sending a
+methods provided by fellowModel before sending a
 response back to the client (or an error message).
 */
 
 // Get All (Read)
-const listFellows = (req, res) => {
-  const fellowsList = Fellow.list();
+exports.listFellows = (req, res) => {
+  const fellowsList = fellowModel.list();
   res.send(fellowsList);
-}
+};
 
 // Get One (Read)
-const findFellow = (req, res) => {
+exports.findFellow = (req, res) => {
   const { id } = req.params;
-  const fellow = Fellow.find(Number(id));
+  const fellow = fellowModel.find(Number(id));
 
   if (!fellow) {
     return res.status(404).send({
@@ -26,18 +26,18 @@ const findFellow = (req, res) => {
 };
 
 // Create
-const createFellow = (req, res) => {
+exports.createFellow = (req, res) => {
   const { fellowName } = req.body;
   if (!fellowName) {
     return res.status(400).send({ message: "Invalid Name" });
   }
 
-  const newFellow = Fellow.create(fellowName);
+  const newFellow = fellowModel.create(fellowName);
   res.send(newFellow);
 };
 
 // Update
-const updateFellow = (req, res) => {
+exports.updateFellow = (req, res) => {
   const { fellowName } = req.body;
 
   if (!fellowName) {
@@ -45,7 +45,7 @@ const updateFellow = (req, res) => {
   }
 
   const { id } = req.params;
-  const updatedFellow = Fellow.editName(Number(id), fellowName);
+  const updatedFellow = fellowModel.editName(Number(id), fellowName);
 
   if (!updatedFellow) {
     return res.status(404).send({
@@ -54,12 +54,12 @@ const updateFellow = (req, res) => {
   }
 
   res.send(updatedFellow);
-}
+};
 
 // Delete
-const deleteFellow = (req, res) => {
+exports.deleteFellow = (req, res) => {
   const { id } = req.params;
-  const didDelete = Fellow.delete(Number(id));
+  const didDelete = fellowModel.delete(Number(id));
 
   if (!didDelete) {
     return res.status(404).send({
@@ -68,12 +68,4 @@ const deleteFellow = (req, res) => {
   }
 
   res.sendStatus(204);
-}
-
-module.exports = {
-  listFellows,
-  findFellow,
-  createFellow,
-  updateFellow,
-  deleteFellow
 };
