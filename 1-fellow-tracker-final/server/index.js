@@ -5,7 +5,8 @@ const app = express();
 const pathToFrontend = path.join(__dirname, '../frontend');
 
 // Auto-incrementing ID generator
-const getId = ((id = 0) => () => ++id)();
+let id = 1;
+const getId = () => id++;
 
 // In Memory Database
 const fellows = [
@@ -57,7 +58,7 @@ const createFellow = (req, res) => {
 
   const newFellow = { name: fellowName, id: getId() };
   fellows.push(newFellow);
-  res.send(newFellow);
+  res.status(201).send(newFellow);
 };
 
 // Update
@@ -97,9 +98,8 @@ app.post('/api/fellows', createFellow);
 app.patch('/api/fellows/:id', updateFellow);
 app.delete('/api/fellows/:id', deleteFellow);
 
-app.get('*', (req, res, next) => {
-  if (req.originalUrl.startsWith('/api')) return next();
-  res.sendFile(path.join(pathToFrontend, 'index.html'));
+app.use((req, res) => {
+  res.status(404).send({ error: `Not found: ${req.originalUrl}` });
 });
 
 const port = 8080;

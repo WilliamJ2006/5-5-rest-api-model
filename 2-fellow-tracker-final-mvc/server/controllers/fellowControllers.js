@@ -45,7 +45,7 @@ module.exports.updateFellow = (req, res) => {
   }
 
   const { id } = req.params;
-  const updatedFellow = fellowModel.editName(Number(id), fellowName);
+  const updatedFellow = fellowModel.update(Number(id), fellowName);
 
   if (!updatedFellow) {
     return res.status(404).send({
@@ -59,7 +59,7 @@ module.exports.updateFellow = (req, res) => {
 // Delete
 module.exports.deleteFellow = (req, res) => {
   const { id } = req.params;
-  const didDelete = fellowModel.delete(Number(id));
+  const didDelete = fellowModel.destroy(Number(id));
 
   if (!didDelete) {
     return res.status(404).send({

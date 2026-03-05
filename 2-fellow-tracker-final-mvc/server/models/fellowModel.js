@@ -26,14 +26,14 @@ module.exports.find = (id) => {
   return { ...fellow };
 };
 
-module.exports.editName = (id, newName) => {
+module.exports.update = (id, fellowName) => {
   const fellow = fellows.find((fellow) => fellow.id === id);
   if (!fellow) return null;
-  fellow.name = newName;
+  fellow.name = fellowName;
   return { ...fellow };
 };
 
-module.exports.delete = (id) => {
+module.exports.destroy = (id) => {
   const fellowIndex = fellows.findIndex((fellow) => fellow.id === id);
   if (fellowIndex < 0) {
     return false;
