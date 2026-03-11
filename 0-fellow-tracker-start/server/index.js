@@ -41,6 +41,17 @@ const listFellows = (req, res) => {
 };
 
 // POST /api/fellows
+const findFellow = (req, res) => {
+  const id = req.params.id;
+  if (fellows.some((fellow) => fellow.id === Number(id))) {
+    res.send(fellows.find((fellow) => fellow.id === Number(id)));
+    return;
+  }
+  res.status(404).send({ message: `ID not found` });
+};
+
+// GET /api/fellows/:id
+
 const createFellow = (req, res) => {
   const { fellowName } = req.body;
   if (!fellowName) {
@@ -50,16 +61,6 @@ const createFellow = (req, res) => {
   const newFellow = { name: fellowName, id: getId() };
   fellows.push(newFellow);
   res.status(201).send(newFellow);
-};
-
-// GET /api/fellows/:id
-const findFellow = (req, res) => {
-  const id = req.params.id;
-  if (fellows.some((fellow) => fellow.id === Number(id))) {
-    res.send(fellows.find((fellow) => fellow.id === Number(id)));
-    return;
-  }
-  res.status(404).send({ message: `ID not found` });
 };
 
 // TODO: Create controllers for PATCH and DELETE
